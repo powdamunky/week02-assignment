@@ -1,0 +1,34 @@
+*   {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: coral;
+}
+
+.main-image img {
+  width: 100%;
+  height: 100vh; 
+  object-fit: cover; 
+}
+
+.thumbnails {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.thumbnail {
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.thumbnail.active {
+  border: 2px solid blue;
+}
