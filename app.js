@@ -44,4 +44,53 @@ console.info("Hello World!")
     // set the src and alt values to be the same as the thumbnail that was clicked
     // (image.src = largeImg.src)
     // append this new image to the fullscreen container
+//
+const images = [
+    {   
+        src: "./assets/images/danhole.jpg",
+        alt: "My friend Dan sitting in a hole on the beach",
+    },
+    {
+        src: "./assets/images/fish.jpg",
+        alt: "An image of a toy Viking/Barbarian at the bottom of a fish tank"
+    },
+    {
+        src: "./assets/images/pylons.jpg",
+        alt: "A black and white photo of some electrical pylons in a field"
+    }
+];
+
+// function init() {
+//     console.log(images)
+//     displayFullImage(images[currentImageIndex])
+//     createThumbnails()
 // }
+
+const thumbContainer = document.getElementById('thumbBar');
+const ImgContainer = document.getElementById('fullImgContainer');
+
+let currentImage;
+
+function createThumbnails() {
+  images.forEach((image, index) => {
+    const thumbnail = document.createElement('img');
+    thumbnail.src = image.src;
+    thumbnail.alt = image.alt;
+    thumbnail.style.width = '100px';
+    thumbnail.addEventListener('click', () => {
+      displayFullImage(index);
+    });
+    thumbContainer.appendChild(thumbnail);
+  });
+}
+
+function displayFullImage(index) {
+  currentImage = index;
+  const fullImage = ImgContainer.querySelector('img');
+  if (!fullImage) {
+    fullImage = document.createElement('img');
+    ImgContainer.appendChild(fullImage);
+  }
+  ImgContainer.querySelector('img').src = images[index].src;
+  ImgContainer.querySelector('img').alt = images[index].alt;
+}
