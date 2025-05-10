@@ -1,5 +1,3 @@
-console.info("Hello World!")
-
 //TODO There are 3 main tasks to do:
 // Store images data
 // Create the thumbnails
@@ -45,52 +43,131 @@ console.info("Hello World!")
     // (image.src = largeImg.src)
     // append this new image to the fullscreen container
 //
+ console.log("Hello World!")   
+    
+    const mainImage = document.getElementById('main-image-container');
+    const thumbnailContainer = document.getElementById('thumbnail-container');
+    const prevButton = document.getElementById('prev');
+    const nextButton = document.getElementById('next');
+
+
+
 const images = [
-    {   
-        src: "./assets/images/danhole.jpg",
-        alt: "My friend Dan sitting in a hole on the beach",
+    {
+    id: 1,
+    title: 'Danhole',
+    alt: 'An image of my friend Dan sitting in a hole on a beach',
+    fullUrl: 'assets/images/danhole.webp',
+    thumbnailUrl: 'assets/images/thumbs/danhole.webp'
     },
     {
-        src: "./assets/images/fish.jpg",
-        alt: "An image of a toy Viking/Barbarian at the bottom of a fish tank"
+    id: 2,
+    title: 'Windmillin`',
+    alt: 'An image of plastic windmill in the sun',
+    fullUrl: 'assets/images/windmill.webp',
+    thumbnailUrl: 'assets/images/thumbs/windmill.webp'
     },
     {
-        src: "./assets/images/pylons.jpg",
-        alt: "A black and white photo of some electrical pylons in a field"
-    }
-];
+    id: 3,
+    title: 'Black and white pylons',
+    alt: 'A black and white image of some electrical pylons in a field',
+    fullUrl: 'assets/images/pylons.webp',
+    thumbnailUrl: 'assets/images/thumbs/pylons.webp'
+    },
+    {
+    id: 4,
+    title: 'Tibby asleep on my arm',
+    alt: 'An image of my old cat Tibby asleep on my arm',
+    fullUrl: 'assets/images/tibbs2.webp',
+    thumbnailUrl: 'assets/images/thumbs/tibbs2.webp'
+    },
+    {
+    id: 5,
+    title: 'Tony reporting in!',
+    alt: 'An image of Tony in a skip talking to someone on a freezers plug',
+    fullUrl: 'assets/images/tony.webp',
+    thumbnailUrl: 'assets/images/thumbs/tony.webp'
+    },
+    {
+    id: 6,
+    title: 'Tibby the tuxedo cat',
+    alt: 'An image of my old cat Tibby',
+    fullUrl: 'assets/images/tibbs.webp',
+    thumbnailUrl: 'assets/images/thumbs/tibbs.webp'
+    },
+    {
+    id: 7,
+    title: 'Fish and Man shall live in harmony',
+    alt: 'An image of a toy Viking at the bottom of a fishtank surrounded by fish',
+    fullUrl: 'assets/images/fish.webp',
+    thumbnailUrl: 'assets/images/thumbs/fish.webp'
+    },
+    {
+    id: 8,
+    title: 'Flying off into the sunset',
+    alt: 'A photo of a flying off into the Norfolk sunset',
+    fullUrl: 'assets/images/fly.webp',
+    thumbnailUrl: 'assets/images/thumbs/fly.webp'
+    },
+  ];
 
-// function init() {
-//     console.log(images)
-//     displayFullImage(images[currentImageIndex])
-//     createThumbnails()
-// }
+let currentImageIndex = 0;
 
-const thumbContainer = document.getElementById('thumbBar');
-const ImgContainer = document.getElementById('fullImgContainer');
+function loadImage(index) {
+  mainImage.innerHTML = '';
+  const img = document.createElement('img');
+  img.src = images[index].fullUrl;
+  img.alt = images[index].alt;
+  img.title = images[index].title;
+  mainImage.appendChild(img);
+}
 
-let currentImage;
+loadImage(currentImageIndex);
 
-function createThumbnails() {
-  images.forEach((image, index) => {
+document.getElementById('next').addEventListener('click', () => {
+  currentImageIndex = (currentImageIndex + 1) % images.length;
+  loadImage(currentImageIndex);
+});
+
+document.getElementById('prev').addEventListener('click', () => {
+  currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+  loadImage(currentImageIndex);
+});
+
+images.forEach((image, index) => {
     const thumbnail = document.createElement('img');
-    thumbnail.src = image.src;
+    thumbnail.src = image.thumbnailUrl;
     thumbnail.alt = image.alt;
-    thumbnail.style.width = '100px';
+    thumbnail.style.cursor = 'pointer';
     thumbnail.addEventListener('click', () => {
-      displayFullImage(index);
-    });
-    thumbContainer.appendChild(thumbnail);
-  });
+                loadImage(index);
+        });
+    thumbnailContainer.appendChild(thumbnail);
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'ArrowLeft') {
+    document.getElementById('prev').click();
+  } else if (event.key === 'ArrowRight') {
+    document.getElementById('next').click();
+  }
+});
+
+let idleTime = 0;
+let idleTimeout;
+
+function resetIdleTime() {
+  idleTime = 0;
+  clearTimeout(idleTimeout);
+  document.getElementById('thumbnail-container').style.display ='flex';
+  idleTimeout = setTimeout(hideThumbnails, 2500);
 }
 
-function displayFullImage(index) {
-  currentImage = index;
-  const fullImage = ImgContainer.querySelector('img');
-  if (!fullImage) {
-    fullImage = document.createElement('img');
-    ImgContainer.appendChild(fullImage);
-  }
-  ImgContainer.querySelector('img').src = images[index].src;
-  ImgContainer.querySelector('img').alt = images[index].alt;
+function hideThumbnails() {
+  document.getElementById('thumbnail-container').style.display = 'none';
 }
+
+document.addEventListener('mousemove', resetIdleTime);
+document.addEventListener('keydown', resetIdleTime);
+document.addEventListener('click', resetIdleTime)
+resetIdleTime();
